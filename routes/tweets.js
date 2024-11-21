@@ -46,7 +46,7 @@ router.put("/like/:userToken/:tweetToken", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-    const allTweets = await Tweet.find()
+    const allTweets = await Tweet.find().populate('username')
     res.json({result: true, allTweets: allTweets})
 })
 

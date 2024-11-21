@@ -45,4 +45,9 @@ router.put("/like/:userToken/:tweetToken", async (req, res) => {
     }
 });
 
+router.get("/", async (req, res) => {
+    const allTweets = await Tweet.find()
+    res.json({result: true, allTweets: allTweets})
+})
+
 module.exports = router;

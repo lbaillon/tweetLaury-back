@@ -22,6 +22,7 @@ router.post('/signup', async (req, res) => {
       const newUser = new User({
         username: req.body.username,
         firstname: req.body.firstname,
+        avatar: req.body.avatar,
         password: hash,
         token: uid2(32)
     })
@@ -30,6 +31,11 @@ router.post('/signup', async (req, res) => {
     
     }
   } 
+})
+
+router.get('/:userToken', async(req, res) => {
+  const user = await User.findOne({ token: req.params.userToken });
+  res.json({result: true, userData: user})
 })
 
 router.post('/signin', async (req, res) => {

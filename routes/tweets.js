@@ -36,7 +36,14 @@ router.put("/like/:userToken/:tweetToken", async (req, res) => {
     if (!user || !tweet) {
         res.json({ result: false, error: "User or tweet not found" });
         return;
-    } else {
+    }else if (tweet.likes.includes(req.params.userToken)) {
+        const likedTweet = await Tweet.updateOne(
+            {token: req.params.tweetToken },
+            {$pull : {likes: req.params.userToken}}
+        )
+        res.json({ result: 'like removed', likedTweet: likedTweet})
+    } 
+    else {
         const likedTweet = await Tweet.updateOne(
             {token: req.params.tweetToken},
             {$push: {likes: req.params.userToken}}
@@ -48,6 +55,11 @@ router.put("/like/:userToken/:tweetToken", async (req, res) => {
 router.get("/", async (req, res) => {
     const allTweets = await Tweet.find().populate('username')
     res.json({result: true, allTweets: allTweets})
+})
+
+router.delete('/delete/:tweetToken', async (req, res) => {
+    const tweets = await Tweet.deleteOne({token: req.params.tweetToken})
+    res.json({result: true, tweets: tweets})
 })
 
 module.exports = router;

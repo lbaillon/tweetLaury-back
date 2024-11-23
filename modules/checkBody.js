@@ -6,7 +6,6 @@
 function checkBody(body, keys) {
     let result = true
     for (const input of keys){
-        console.log(body[input])
         if(!body[input] || body[input]=== ""){
             result = false
         }
